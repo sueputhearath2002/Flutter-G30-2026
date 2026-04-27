@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter2026/basic_screen.dart';
+import 'package:flutter2026/basic_widget/action_widget.dart';
 import 'package:flutter2026/basic_widget/common_widget.dart';
+import 'package:flutter2026/basic_widget/inputs_widget.dart';
 
 import 'basic_widget/layout_widget.dart' show RowWidget, LayoutWidget;
 
@@ -18,7 +21,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: CommonWidget(),
+      home: BasicScreen(),
+      // ActionWidget(),
+      // InputsWidget(),
+      // CommonWidget(),
       // LayoutWidget()
       // const MyHomePage(title: 'Flutter Demo Home Page'),
     );

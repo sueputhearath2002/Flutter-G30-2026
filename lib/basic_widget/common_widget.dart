@@ -11,6 +11,28 @@ class CommonWidget extends StatelessWidget {
           child: Column(
             spacing: 16,
             children: [
+              ListTile(
+                iconColor: Colors.red,
+                onTap: () {
+                  print("Listle flutter");
+                },
+                leading: Icon(Icons.person_pin, size: 45),
+                title: Text(
+                  "Jonh 123",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                subtitle: Text("0987654343"),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
+              ListTile(
+                leading: Icon(Icons.person_pin, size: 45),
+                title: Text(
+                  "Jonh 123",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                subtitle: Text("0987654343"),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
               Divider(
                 endIndent: 16,
                 indent: 16,
