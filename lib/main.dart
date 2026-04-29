@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter2026/Assignment/A/home_screen.dart';
 import 'package:flutter2026/basic_screen.dart';
 import 'package:flutter2026/basic_widget/action_widget.dart';
 import 'package:flutter2026/basic_widget/common_widget.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: BasicScreen(),
+      home: HomeScreen(),
+      // BasicScreen(),
       // ActionWidget(),
       // InputsWidget(),
       // CommonWidget(),

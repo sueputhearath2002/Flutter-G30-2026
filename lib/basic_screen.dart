@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter2026/basic_widget/pages/demo_screen/admin_screen.dart';
+import 'package:flutter2026/basic_widget/pages/demo_screen/category_screen.dart';
 import 'package:flutter2026/basic_widget/pages/home_page.dart';
 import 'package:flutter2026/basic_widget/pages/order_page.dart';
 import 'package:flutter2026/basic_widget/pages/profile.dart';
 import 'package:flutter2026/basic_widget/pages/search_page.dart';
 
 class BasicScreen extends StatefulWidget {
-  BasicScreen({super.key});
+  const BasicScreen({super.key});
 
   @override
   State<BasicScreen> createState() => _BasicScreenState();
@@ -65,9 +67,30 @@ class _BasicScreenState extends State<BasicScreen> {
                 subtitle: Text("Jonh@gmail.com"),
               ),
             ),
-            ListTile(title: Text("Home"), leading: Icon(Icons.home)),
-            ListTile(title: Text("Home"), leading: Icon(Icons.home)),
-            ListTile(title: Text("Home"), leading: Icon(Icons.home)),
+            ListTile(
+              title: Text("Admin"),
+              leading: Icon(Icons.person),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Category"),
+              leading: Icon(Icons.category),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CategoryScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Product"),
+              leading: Icon(Icons.production_quantity_limits),
+            ),
           ],
         ),
       ),
