@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter2026/Assignment/A/home_screen.dart';
 import 'package:flutter2026/basic_widget/pages/demo_screen/admin_screen.dart';
 import 'package:flutter2026/basic_widget/pages/demo_screen/category_screen.dart';
 import 'package:flutter2026/basic_widget/pages/home_page.dart';
@@ -14,7 +15,7 @@ class BasicScreen extends StatefulWidget {
 }
 
 class _BasicScreenState extends State<BasicScreen> {
-  final _page = [HomePage(), SearchPage(), OrderPage(), Profile()];
+  final _page = [HomeScreen(), SearchPage(), OrderPage(), Profile()];
 
   int _selectIndex = 0;
 
@@ -27,30 +28,30 @@ class _BasicScreenState extends State<BasicScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 2,
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-        ],
-        title: Text("Basic flutter"),
-        backgroundColor: Colors.blue,
-        // bottom: PreferredSize(
-        //   preferredSize: Size.fromHeight(100),
-        //   child: Container(
-        //     height: 100,
-        //     decoration: BoxDecoration(
-        //       color: Colors.amber,
-        //       borderRadius: BorderRadius.only(
-        //         bottomLeft: Radius.circular(16),
-        //         bottomRight: Radius.circular(16),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        centerTitle: false,
-        // leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
-      ),
+      // appBar: AppBar(
+      //   titleSpacing: 2,
+      //   actions: [
+      //     IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+      //     IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+      //   ],
+      //   title: Text("Basic flutter"),
+      //   backgroundColor: Colors.blue,
+      //   // bottom: PreferredSize(
+      //   //   preferredSize: Size.fromHeight(100),
+      //   //   child: Container(
+      //   //     height: 100,
+      //   //     decoration: BoxDecoration(
+      //   //       color: Colors.amber,
+      //   //       borderRadius: BorderRadius.only(
+      //   //         bottomLeft: Radius.circular(16),
+      //   //         bottomRight: Radius.circular(16),
+      //   //       ),
+      //   //     ),
+      //   //   ),
+      //   // ),
+      //   centerTitle: false,
+      //   // leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
+      // ),
       drawer: Drawer(
         child: ListView(
           children: [
