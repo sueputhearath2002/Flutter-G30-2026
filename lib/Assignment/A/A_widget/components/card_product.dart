@@ -8,61 +8,66 @@ class CardProduct extends StatelessWidget {
     required this.imgProduct,
     required this.title,
     required this.price,
+    this.onTap,
   });
   final String imgProduct;
   final String title;
   final String price;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          margin: EdgeInsets.only(right: 14),
-          decoration: BoxDecoration(
-            color: ColorStyle.greyColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadiusGeometry.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
+        InkWell(
+          onTap: onTap,
+          child: Container(
+            margin: EdgeInsets.only(right: 14),
+            decoration: BoxDecoration(
+              color: ColorStyle.greyColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadiusGeometry.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    width: 170,
+                    height: 120,
+                    imageUrl: imgProduct,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  width: 120,
-                  height: 120,
-                  imageUrl: imgProduct,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      price,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: ColorStyle.mainColor,
+                      Text(
+                        price,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ColorStyle.mainColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Positioned(

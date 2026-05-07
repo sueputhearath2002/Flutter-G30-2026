@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/card_product.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/header_title.dart';
 import 'package:flutter2026/Assignment/A/model/product_model.dart';
+import 'package:flutter2026/Assignment/A/product_detail_screen.dart';
 import 'package:flutter2026/constant/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -93,6 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return CardProduct(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductDetailScreen()),
+              );
+            },
             imgProduct: product[index].imagURl,
             title: product[index].title,
             price: product[index].price,
@@ -107,33 +114,27 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         CarouselSlider.builder(
           itemCount: slideImages.length,
-          itemBuilder:
-              (BuildContext context, int itemIndex, int pageViewIndex) =>
-                  Container(
-                    margin: EdgeInsets.only(right: 16),
-                    height: 30,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: slideImages[itemIndex],
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                    ),
-                  ),
+          itemBuilder: (context, itemIndex, pageViewIndex) => Container(
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: slideImages[itemIndex],
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+          ),
           options: CarouselOptions(
+            height: 200,
+            viewportFraction: 0.9,
+            enlargeCenterPage: false,
+            autoPlay: true,
             onPageChanged: (index, reason) => setState(() {
               _current = index;
             }),
-            height: 200,
-            viewportFraction: 0.9,
-            initialPage: 2,
-            enlargeFactor: 0.1,
-            enlargeCenterPage: true,
-            aspectRatio: 16 / 9,
-            autoPlay: true,
           ),
         ),
         Row(
