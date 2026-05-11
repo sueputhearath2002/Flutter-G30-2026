@@ -1,12 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
+import 'package:flutter2026/Assignment/A/cart_screen.dart';
 import 'package:flutter2026/constant/colors.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatefulWidget {
+  const ProductDetailScreen({super.key});
 
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final List<String> sizeProduct = ["20", "30", "40", "50", "60", "70", "80"];
+
+  String getSize = "";
+
+  // {
+  //   size: getSize
+  // }
+
+  void selectedSize(String size) {
+    setState(() {
+      getSize = size;
+    });
+    print("=========get Size===${size}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +68,12 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartScreen()),
+                  );
+                },
                 style: ButtonStyle(
                   elevation: WidgetStatePropertyAll(0),
                   padding: WidgetStatePropertyAll(
@@ -82,16 +106,24 @@ class ProductDetailScreen extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: sizeProduct.length,
             itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.only(right: 8),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorStyle.greyColor),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  sizeProduct[index].toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+              return GestureDetector(
+                onTap: () => selectedSize(sizeProduct[index]),
+                child: Container(
+                  margin: EdgeInsets.only(right: 8),
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorStyle.greyColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    sizeProduct[index].toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: getSize == sizeProduct[index]
+                          ? ColorStyle.mainColor
+                          : Colors.black45,
+                    ),
+                  ),
                 ),
               );
             },
