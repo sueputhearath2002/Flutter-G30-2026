@@ -9,7 +9,7 @@ class CartProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: ColorStyle.greyColor,
@@ -23,42 +23,51 @@ class CartProduct extends StatelessWidget {
 
   Widget _buildAction() {
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          CircleBtn(
-            onTap: () => print("Deleted"),
-            icon: Icons.delete_forever_rounded,
-            iconColor: Colors.red,
-          ),
-          Row(
-            spacing: 12,
-            children: [
-              CircleBtn(
-                sizeICon: 12,
-                size: Size(18, 18),
-                bgColor: ColorStyle.mainColor,
-                onTap: () => print("Deleted"),
-                icon: Icons.remove,
-                iconColor: Colors.white,
-              ),
-              Text(
-                "09",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              CircleBtn(
-                sizeICon: 12,
-                size: Size(18, 18),
-                bgColor: ColorStyle.mainColor,
-                onTap: () => print("Deleted"),
-                icon: Icons.add,
-                iconColor: Colors.white,
-              ),
-            ],
-          ),
-        ],
+      padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+      child: SizedBox(
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            CircleBtn(
+              onTap: () => print("Deleted"),
+              icon: Icons.delete_forever_rounded,
+              iconColor: Colors.red,
+            ),
+
+            Row(
+              children: [
+                CircleBtn(
+                  sizeICon: 12,
+                  size: Size(18, 18),
+                  bgColor: ColorStyle.mainColor,
+                  onTap: () => print("Minus"),
+                  icon: Icons.remove,
+                  iconColor: Colors.white,
+                ),
+
+                SizedBox(width: 12),
+
+                Text(
+                  "09",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+
+                SizedBox(width: 12),
+
+                CircleBtn(
+                  sizeICon: 12,
+                  size: Size(18, 18),
+                  bgColor: ColorStyle.mainColor,
+                  onTap: () => print("Add"),
+                  icon: Icons.add,
+                  iconColor: Colors.white,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

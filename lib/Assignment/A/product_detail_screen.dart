@@ -29,64 +29,57 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        dividerTheme: const DividerThemeData(color: Colors.transparent),
+    return Scaffold(
+      appBar: _buildAppbar(context),
+      body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        children: [
+          _buildHeaderTitle(),
+          SizedBox(height: 16),
+          _buildDescription(),
+          SizedBox(height: 16),
+          _buildSize(),
+        ],
       ),
-      child: Scaffold(
-        appBar: _buildAppbar(context),
-        body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+      persistentFooterButtons: [
+        Row(
+          spacing: 16,
           children: [
-            _buildHeaderTitle(),
-            SizedBox(height: 16),
-            _buildDescription(),
-            SizedBox(height: 16),
-            _buildSize(),
-          ],
-        ),
-        persistentFooterButtons: [
-          Row(
-            spacing: 16,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: WidgetStatePropertyAll(0),
-                    padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    backgroundColor: WidgetStatePropertyAll(
-                      ColorStyle.mainColor,
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    "Buy Now",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
-                  );
-                },
+            Expanded(
+              child: ElevatedButton(
                 style: ButtonStyle(
                   elevation: WidgetStatePropertyAll(0),
                   padding: WidgetStatePropertyAll(
                     EdgeInsets.symmetric(vertical: 12),
                   ),
-                  backgroundColor: WidgetStatePropertyAll(ColorStyle.greyColor),
+                  backgroundColor: WidgetStatePropertyAll(ColorStyle.mainColor),
                 ),
-                child: Icon(Icons.cases_rounded, size: 26),
+                onPressed: () {},
+                child: Text(
+                  "Buy Now",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartScreen()),
+                );
+              },
+              style: ButtonStyle(
+                elevation: WidgetStatePropertyAll(0),
+                padding: WidgetStatePropertyAll(
+                  EdgeInsets.symmetric(vertical: 12),
+                ),
+                backgroundColor: WidgetStatePropertyAll(ColorStyle.greyColor),
+              ),
+              child: Icon(Icons.cases_rounded, size: 26),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

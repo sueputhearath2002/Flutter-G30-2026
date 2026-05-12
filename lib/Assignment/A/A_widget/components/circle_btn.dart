@@ -28,7 +28,7 @@ class CircleBtn extends StatelessWidget {
         size: sizeICon ?? 24,
       ),
       style: ButtonStyle(
-        maximumSize: WidgetStatePropertyAll(Size(36, 36)),
+        maximumSize: WidgetStatePropertyAll(Size(55, 55)),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         minimumSize: WidgetStatePropertyAll(size ?? Size(24, 24)),
         backgroundColor: WidgetStatePropertyAll(
