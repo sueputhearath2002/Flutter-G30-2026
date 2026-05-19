@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1042149220956",
+    "project_id": "flutter2026-ed422",
+    "storage_bucket": "flutter2026-ed422.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042149220956:android:7627250e30d33c79d5fc99",
+        "android_client_info": {
+          "package_name": "com.flutter2026.flutter2026"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALXR_bKo460ReOcV6EQPSwPe-YH1pxV8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

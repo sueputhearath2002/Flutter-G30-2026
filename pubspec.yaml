@@ -38,6 +38,7 @@ dependencies:
   image_picker: ^1.2.1
   carousel_slider: ^5.1.2
   cached_network_image: ^3.4.1
+  firebase_core: ^4.9.0
 
 dev_dependencies:
   flutter_test:

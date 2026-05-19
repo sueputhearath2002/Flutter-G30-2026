@@ -1,13 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/home_screen.dart';
+import 'package:flutter2026/Firebase_screen/user_screen.dart';
 import 'package:flutter2026/basic_screen.dart';
 import 'package:flutter2026/basic_widget/action_widget.dart';
 import 'package:flutter2026/basic_widget/common_widget.dart';
 import 'package:flutter2026/basic_widget/inputs_widget.dart';
+import 'package:flutter2026/firebase_options.dart';
 
 import 'basic_widget/layout_widget.dart' show RowWidget, LayoutWidget;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -24,7 +29,8 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.transparent,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: BasicScreen(),
+      home: UserScreen(),
+      // BasicScreen(),
       // BasicScreen(),
       // ActionWidget(),
       // InputsWidget(),
