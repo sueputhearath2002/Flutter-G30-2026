@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/home_screen.dart';
+import 'package:flutter2026/Firebase_screen/notification/local_notification.dart';
 import 'package:flutter2026/Firebase_screen/user_screen.dart';
 import 'package:flutter2026/basic_screen.dart';
 import 'package:flutter2026/basic_widget/action_widget.dart';
@@ -13,13 +14,12 @@ import 'basic_widget/layout_widget.dart' show RowWidget, LayoutWidget;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await LocalNotification.init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

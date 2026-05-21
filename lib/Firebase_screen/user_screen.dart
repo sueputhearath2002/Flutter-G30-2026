@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
@@ -88,15 +90,23 @@ class UserScreen extends StatelessWidget {
               final user = users[index];
               return ListTile(
                 leading: ClipOval(
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: user.avatar ?? "",
-                    height: 54,
-                    width: 54,
-                    placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
+                  child: (user.avatar != null && user.avatar!.startsWith('/'))
+                      ? Image.file(
+                          File(user.avatar ?? ""),
+                          width: 54,
+                          height: 54,
+                          fit: BoxFit.cover,
+                        )
+                      : CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: user.avatar ?? "",
+                          height: 54,
+                          width: 54,
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
                 ),
                 title: Text(user.name ?? ""),
                 subtitle: Text(user.email ?? ""),

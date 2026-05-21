@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
 import 'package:flutter2026/Firebase_screen/user_model.dart';
 import 'package:flutter2026/Firebase_screen/user_service.dart';
 import 'package:flutter2026/constant/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserFormScreen extends StatefulWidget {
   const UserFormScreen({super.key, this.user});
@@ -21,6 +25,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
   TextEditingController avatarUser = TextEditingController();
 
   bool _isLoading = false;
+  final ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
@@ -28,6 +33,18 @@ class _UserFormScreenState extends State<UserFormScreen> {
     emailUser.text = widget.user?.email ?? "";
     avatarUser.text = widget.user?.avatar ?? "";
     super.initState();
+  }
+
+  Future<void> pickImage() async {
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.camera,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        avatarUser.text = pickedFile.path;
+      });
+    }
   }
 
   Future<void> _submitUser() async {
@@ -82,29 +99,30 @@ class _UserFormScreenState extends State<UserFormScreen> {
         child: ListView(
           padding: EdgeInsets.all(16),
           children: [
-            _buildAvatar(),
+            _buildAvatarPickImage(),
+            // _buildAvatar(),
             SizedBox(height: 32),
-            TextFormField(
-              controller: avatarUser,
-              validator: (v) => (v == null || v.trim().isEmpty)
-                  ? "Avatar URL is required"
-                  : null,
-              onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                filled: true,
+            // TextFormField(
+            //   controller: avatarUser,
+            //   validator: (v) => (v == null || v.trim().isEmpty)
+            //       ? "Avatar URL is required"
+            //       : null,
+            //   onChanged: (_) => setState(() {}),
+            //   decoration: InputDecoration(
+            //     filled: true,
 
-                prefixIcon: Icon(Icons.person),
-                // suffixIcon: Icon(Icons.percent),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                label: Text("Avatar URL"),
-                hintText: "Example -------",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black, width: 3),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
+            //     prefixIcon: Icon(Icons.person),
+            //     // suffixIcon: Icon(Icons.percent),
+            //     floatingLabelBehavior: FloatingLabelBehavior.always,
+            //     label: Text("Avatar URL"),
+            //     hintText: "Example -------",
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(16),
+            //       borderSide: BorderSide(color: Colors.black, width: 3),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 16),
             TextFormField(
               controller: nameUser,
               validator: (v) =>
@@ -171,6 +189,35 @@ class _UserFormScreenState extends State<UserFormScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildAvatarPickImage() {
+    final path = avatarUser.text.trim();
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 60,
+            child: path.isEmpty
+                ? Icon(Icons.person, size: 80, color: Colors.grey.shade200)
+                : Image.file(
+                    File(path),
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: CircleBtn(
+              icon: Icons.camera_alt_rounded,
+              onTap: () => pickImage(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
