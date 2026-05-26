@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
 import 'package:flutter2026/Firebase_screen/user_form_screen.dart';
-import 'package:flutter2026/Firebase_screen/user_model.dart';
+import 'package:flutter2026/Assignment/A/model/user_model.dart';
 import 'package:flutter2026/Firebase_screen/user_service.dart';
 
 class UserScreen extends StatelessWidget {

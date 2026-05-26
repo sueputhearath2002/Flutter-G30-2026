@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter2026/Assignment/A/Sqllite/person_screen.dart';
 import 'package:flutter2026/Assignment/A/home_screen.dart';
 import 'package:flutter2026/Firebase_screen/notification/local_notification.dart';
+import 'package:flutter2026/Firebase_screen/user_form_screen.dart';
 import 'package:flutter2026/Firebase_screen/user_screen.dart';
 import 'package:flutter2026/basic_screen.dart';
 import 'package:flutter2026/basic_widget/action_widget.dart';
 import 'package:flutter2026/basic_widget/common_widget.dart';
 import 'package:flutter2026/basic_widget/inputs_widget.dart';
+import 'package:flutter2026/constant/const.dart';
 import 'package:flutter2026/firebase_options.dart';
 
 import 'basic_widget/layout_widget.dart' show RowWidget, LayoutWidget;
@@ -29,7 +32,14 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.transparent,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: UserScreen(),
+      navigatorKey: navigatorKey,
+      routes: {
+        '/user_form': (context) => UserFormScreen(),
+        '/list_user': (context) =>
+            UserScreen(), //Navigator.pushName(context,"/list_user")
+      },
+      home: PersonScreen(),
+      // UserScreen(),
       // BasicScreen(),
       // BasicScreen(),
       // ActionWidget(),
