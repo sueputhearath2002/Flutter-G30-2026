@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter2026/Assignment/A/model/user_model.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/model/user_model.dart';
 
 class UserService {
   static final _col = FirebaseFirestore.instance.collection('user');

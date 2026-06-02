@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter2026/Assignment/A/Sqllite/person_screen.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/screen/user/person_screen.dart';
 import 'package:flutter2026/Assignment/A/home_screen.dart';
 import 'package:flutter2026/Firebase_screen/notification/local_notification.dart';
 import 'package:flutter2026/Firebase_screen/user_form_screen.dart';

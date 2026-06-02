@@ -1,6 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter2026/Assignment/A/Sqllite/database_helper.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/model/person_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PersonScreen extends StatefulWidget {
@@ -12,18 +13,95 @@ class PersonScreen extends StatefulWidget {
 
 class _PersonScreenState extends State<PersonScreen> {
   final nameController = TextEditingController();
-
   final emailController = TextEditingController();
-
   File? imageFile;
+
+  List<PersonModel> users = [];
+
+  bool isEdit = false;
+
+  int? editId;
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked == null) return;
+    imageFile = File(picked.path);
     setState(() {
       imageFile = File(picked.path);
+    }); 
+    // rebuild 
+  }
+
+  //Laod user
+
+  Future<void> loadUsers() async {
+    final data = await DatabaseHelper.instance.getUers();
+    setState(() {
+      users = data;
     });
+  }
+
+  Future<void> savePerson() async {
+    if (imageFile == null) return;
+
+    final person = PersonModel(
+      name: nameController.text,
+      email: emailController.text,
+      avatar: imageFile!.path,
+    );
+    await DatabaseHelper.instance.insertUser(person);
+    clearForm();
+    loadUsers();
+
+    //clear
+  }
+
+  Future<void> updateUser() async {
+    if (imageFile == null) return;
+    final person = PersonModel(
+      id: editId,
+      name: nameController.text,
+      email: emailController.text,
+      avatar: imageFile!.path,
+    );
+    await DatabaseHelper.instance.updateUser(person);
+    clearForm();
+    loadUsers();
+  }
+
+  void clearForm() {
+    nameController.clear();
+    emailController.clear();
+    imageFile = null;
+  }
+
+  void editUser(PersonModel user) {
+    nameController.text = user.name;
+    emailController.text = user.email;
+    imageFile = File(user.avatar);
+
+    editId = user.id;
+    isEdit = true;
+
+    setState(() {});
+  }
+
+  Future<void> deleteUser(PersonModel user) async {
+    final image = File(user.avatar);
+    if (await image.exists()) {
+      await image.delete();
+    }
+
+    await DatabaseHelper.instance.deleteUser(user.id!);
+    clearForm();
+    loadUsers();
+  }
+
+  @override
+  void initState() {
+    loadUsers();
+    super.initState();
   }
 
   @override
@@ -57,7 +135,7 @@ class _PersonScreenState extends State<PersonScreen> {
               ),
             ),
             TextField(
-              controller: nameController,
+              controller: emailController,
               decoration: InputDecoration(
                 labelText: "Email",
                 border: OutlineInputBorder(),
@@ -67,26 +145,37 @@ class _PersonScreenState extends State<PersonScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Save person"),
+                onPressed: () {
+                  isEdit ? updateUser() : savePerson();
+                },
+                child: Text("Save Person"),
               ),
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 6,
+                itemCount: users.length,
                 itemBuilder: (context, index) {
+                  final user = users[index];
                   return Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: FileImage(File("")),
+                        backgroundImage: FileImage(File(user.avatar)),
                       ),
-                      title: Text("User1"),
+                      title: Text(user.name),
+                      subtitle: Text(user.email),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              editUser(user);
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              deleteUser(user);
+                            },
                             icon: Icon(Icons.delete),
                           ),
                         ],

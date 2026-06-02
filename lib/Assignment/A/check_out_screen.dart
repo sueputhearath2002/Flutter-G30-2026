@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/cus_btn.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/row_info.dart';
-import 'package:flutter2026/Assignment/A/model/payment_model.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/model/payment_model.dart';
 import 'package:flutter2026/constant/colors.dart';
 
 class CheckOutScreen extends StatefulWidget {

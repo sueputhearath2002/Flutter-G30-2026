@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/card_product.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/header_title.dart';
-import 'package:flutter2026/Assignment/A/model/product_model.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/model/product_model.dart';
 import 'package:flutter2026/Assignment/A/product_detail_screen.dart';
 import 'package:flutter2026/constant/colors.dart';
 

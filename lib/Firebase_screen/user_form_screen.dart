@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter2026/Assignment/A/A_widget/components/circle_btn.dart';
-import 'package:flutter2026/Assignment/A/model/user_model.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/model/user_model.dart';
 import 'package:flutter2026/Firebase_screen/user_service.dart';
 import 'package:flutter2026/constant/colors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +23,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
   TextEditingController emailUser = TextEditingController();
 
   TextEditingController avatarUser = TextEditingController();
+
 
   bool _isLoading = false;
   final ImagePicker picker = ImagePicker();
