@@ -1,8 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter2026/Assignment/A/Sqllite/database_helper.dart';
 import 'package:flutter2026/Assignment/A/bloc_leaning/model/person_model.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/screen/user/bloc/user_bloc.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/screen/user/user_form/user_form_event.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/screen/user/user_form/user_form_state.dart';
+import 'package:flutter2026/Assignment/A/bloc_leaning/screen/user/user_form/user_from_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class PersonScreen extends StatefulWidget {
   const PersonScreen({super.key});
@@ -14,94 +20,77 @@ class PersonScreen extends StatefulWidget {
 class _PersonScreenState extends State<PersonScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  File? imageFile;
-
-  List<PersonModel> users = [];
-
-  bool isEdit = false;
-
-  int? editId;
-
-  Future<void> pickImage() async {
-    final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked == null) return;
-    imageFile = File(picked.path);
-    setState(() {
-      imageFile = File(picked.path);
-    }); 
-    // rebuild 
-  }
-
-  //Laod user
-
-  Future<void> loadUsers() async {
-    final data = await DatabaseHelper.instance.getUers();
-    setState(() {
-      users = data;
-    });
-  }
-
-  Future<void> savePerson() async {
-    if (imageFile == null) return;
-
-    final person = PersonModel(
-      name: nameController.text,
-      email: emailController.text,
-      avatar: imageFile!.path,
-    );
-    await DatabaseHelper.instance.insertUser(person);
-    clearForm();
-    loadUsers();
-
-    //clear
-  }
-
-  Future<void> updateUser() async {
-    if (imageFile == null) return;
-    final person = PersonModel(
-      id: editId,
-      name: nameController.text,
-      email: emailController.text,
-      avatar: imageFile!.path,
-    );
-    await DatabaseHelper.instance.updateUser(person);
-    clearForm();
-    loadUsers();
-  }
 
   void clearForm() {
     nameController.clear();
     emailController.clear();
-    imageFile = null;
+    context.read<UserFromBloc>().add(ClearUserForm());
+  }
+
+  Future<void> pickImage() async {
+    final formBloc = context.read<UserFromBloc>();
+
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked == null) return;
+    final dir = await getApplicationDocumentsDirectory();
+    final fileName = p.basename(picked.path);
+    final saveImage = await File(picked.path).copy('${dir.path}/$fileName');
+
+    formBloc.add(SelectUserImage(saveImage));
+  }
+
+  void saveUser() {
+    final formBloc = context.read<UserFromBloc>();
+    if (nameController.text.trim().isEmpty ||
+        emailController.text.trim().isEmpty ||
+        formBloc.state.imaeFile == null) {
+      return;
+    }
+
+    final user = PersonModel(
+      name: nameController.text.trim(),
+      email: emailController.text.trim(),
+      avatar: formBloc.state.imaeFile!.path,
+    );
+    context.read<UserBloc>().add(AddUser(user));
+    clearForm();
   }
 
   void editUser(PersonModel user) {
     nameController.text = user.name;
     emailController.text = user.email;
-    imageFile = File(user.avatar);
+    context.read<UserFromBloc>().add(StartEditUser(user));
+  }
 
-    editId = user.id;
-    isEdit = true;
+  void updateUserData() {
+    final formState = context.read<UserFromBloc>().state;
+    if (formState.editId == null || formState.imaeFile == null) return;
 
-    setState(() {});
+    final user = PersonModel(
+      id: formState.editId,
+      name: nameController.text,
+      email: emailController.text,
+      avatar: formState.imaeFile!.path,
+    );
+    context.read<UserBloc>().add(UpdateUser(user));
+    clearForm();
   }
 
   Future<void> deleteUser(PersonModel user) async {
+    final userBloc = context.read<UserBloc>();
     final image = File(user.avatar);
     if (await image.exists()) {
       await image.delete();
     }
-
-    await DatabaseHelper.instance.deleteUser(user.id!);
-    clearForm();
-    loadUsers();
+    userBloc.add(DeleteUser(user.id!));
   }
 
   @override
-  void initState() {
-    loadUsers();
-    super.initState();
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -115,17 +104,21 @@ class _PersonScreenState extends State<PersonScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: () => pickImage(),
-              child: CircleAvatar(
-                radius: 45,
-                backgroundImage: imageFile != null
-                    ? FileImage(imageFile!)
-                    : null,
-                child: imageFile == null
-                    ? Icon(Icons.camera_alt, size: 40)
-                    : null,
-              ),
+            BlocBuilder<UserFromBloc, UserFormState>(
+              builder: (context, state) {
+                return GestureDetector(
+                  onTap: () => pickImage(),
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundImage: state.imaeFile != null
+                        ? FileImage(state.imaeFile!)
+                        : null,
+                    child: state.imaeFile == null
+                        ? Icon(Icons.camera_alt, size: 40)
+                        : null,
+                  ),
+                );
+              },
             ),
             TextField(
               controller: nameController,
@@ -142,46 +135,65 @@ class _PersonScreenState extends State<PersonScreen> {
               ),
             ),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  isEdit ? updateUser() : savePerson();
-                },
-                child: Text("Save Person"),
-              ),
+            BlocBuilder<UserFromBloc, UserFormState>(
+              builder: (context, state) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: state.isEdit ? updateUserData : saveUser,
+                    child: Text(state.isEdit ? "Update Person" : "Save Person"),
+                  ),
+                );
+              },
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  final user = users[index];
-                  return Card(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: FileImage(File(user.avatar)),
-                      ),
-                      title: Text(user.name),
-                      subtitle: Text(user.email),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              editUser(user);
-                            },
-                            icon: Icon(Icons.edit),
+              child: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is UserLoaded) {
+                    if (state.users.isEmpty) {
+                      return Text("No users found");
+                    }
+
+                    return ListView.builder(
+                      itemCount: state.users.length,
+                      itemBuilder: (context, index) {
+                        final user = state.users[index];
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: FileImage(File(user.avatar)),
+                            ),
+                            title: Text(user.name),
+                            subtitle: Text(user.email),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    editUser(user);
+                                  },
+                                  icon: Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    deleteUser(user);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                ),
+                              ],
+                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              deleteUser(user);
-                            },
-                            icon: Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  }
+                  if (state is UserError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return SizedBox();
                 },
               ),
             ),
